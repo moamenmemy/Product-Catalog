@@ -1,0 +1,49 @@
+<section class="max-w-6xl mx-auto p-4">
+
+  <!-- Search Input -->
+  <div class="mb-4 flex gap-2 justify-center">
+    <input 
+      type="text" 
+      placeholder="Search products..." 
+      [ngModel]="searchTerm()" 
+      (ngModelChange)="searchTerm.set($event)"
+      class="border rounded-2xl px-4 py-2 w-80 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+
+    <!-- Filter by Category -->
+    <select 
+      [ngModel]="selectedCategory()" 
+      (ngModelChange)="selectedCategory.set($event)"
+      class="border rounded-2xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      <option *ngFor="let cat of categories()" [value]="cat">{{ cat }}</option>
+    </select>
+  </div>
+
+  <!-- عرض المنتجات -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    @for (item of pagedProducts(); track $index) {
+    <div  (click)="goToDetail(item.id)"
+      class="p-4 bg-white shadow rounded cursor-pointer hover:shadow-lg flex flex-col items-center">
+      <img [src]="item?.image" alt="{{ item?.title }}" class="w-full h-48 object-contain mb-2" />
+      <h3 class="font-semibold text-center">{{ item?.title }}</h3>
+      <p class="text-green-600 font-bold">${{ item?.price }}</p>
+      <p class="text-gray-500 text-sm">{{ item?.category }}</p>
+    </div>
+}
+  </div>
+
+
+  <!-- Paginator -->
+  <div class="mt-4 flex justify-center">
+    <p-paginator 
+      (onPageChange)="onPageChange($event)" 
+      [first]="first()" 
+      [rows]="rows()" 
+      [totalRecords]="filteredProducts().length" 
+      [rowsPerPageOptions]="[5, 10, 20]" 
+      class="w-full max-w-6xl"
+    ></p-paginator>
+  </div>
+
+</section>
