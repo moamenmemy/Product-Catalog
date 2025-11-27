@@ -35,7 +35,6 @@ export class ProductService {
     })
     .then(res => res.json())
     .then(data => {
-      // تحديث المنتج في signal products
       const current = this.products();
       const index = current.findIndex(p => p.id === data.id);
       if (index !== -1) {

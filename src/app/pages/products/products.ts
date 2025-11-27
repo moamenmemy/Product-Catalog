@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './products.scss',
 })
 export class Products {
-    // المنتجات والفلاتر
+   
   filteredProducts = signal<Product[]>([]);
   pagedProducts = signal<Product[]>([]);
   searchTerm = signal('');
@@ -25,10 +25,10 @@ export class Products {
   rows = signal(10);
 
   constructor(private productService: ProductService, private router: Router) {
-    // جلب المنتجات
+   
     this.productService.fetchProducts();
 
-    // تحديث الكاتيجوريات بعد جلب المنتجات
+    
     effect(() => {
       const products = this.productService.products();
       const cats = Array.from(new Set(products.map(p => p.category)));
@@ -48,30 +48,29 @@ export class Products {
         })
       );
 
-      // تحديث صفحة العرض بعد تحديث الفلتر
+      
       this.updatePagedProducts();
     });
 
-    // تحديث صفحة العرض عند تغير الصفحة أو عدد الصفوف
+    
     effect(() => {
       this.updatePagedProducts();
     });
   }
 
-  // دالة لتحديث المنتجات المعروضة حسب الصفحة
+  
   updatePagedProducts() {
     const start = this.first();
     const end = start + this.rows();
     this.pagedProducts.set(this.filteredProducts().slice(start, end));
   }
 
-  // عند تغيير الصفحة
   onPageChange(event: any) {
     this.first.set(event.first);
     this.rows.set(event.rows);
   }
 
-  // الانتقال لتفاصيل المنتج
+  
   goToDetail(id: number | undefined) {
     if (id !== undefined) {
       this.router.navigate(['/products', id]);

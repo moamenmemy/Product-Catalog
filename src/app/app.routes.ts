@@ -22,7 +22,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'products/:id',
+    path: 'products/:id', data: { renderMode: 'client' },
     loadComponent: () =>
       import('./pages/product-detail/product-detail').then(m => m.ProductDetail),
     title: 'Product Detail'

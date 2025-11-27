@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ProductDetail implements OnInit {
   product = signal<Product | null>(null);
-  editMode = signal(false); // حالة التعديل
+  editMode = signal(false); 
 
   constructor(
     private route: ActivatedRoute,
@@ -25,7 +25,7 @@ export class ProductDetail implements OnInit {
     if (!isNaN(id)) {
       const found = this.productService.products().find(p => p.id === id);
       if (found) {
-        this.product.set({...found}); // clone لتجنب تعديل مباشر
+        this.product.set({...found}); 
       } else {
         this.router.navigate(['/products']);
       }

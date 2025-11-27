@@ -12,22 +12,22 @@ export class Dashboard implements OnInit {
 
   constructor(public productService: ProductService,private router: Router) {}
 
-  // إجمالي عدد المنتجات
+  
   totalProducts = computed(() => this.productService.products().length);
 
-  // أعلى سعر
+
   highestPrice = computed(() => {
     const items = this.productService.products();
     return items.length ? Math.max(...items.map(p => p.price)) : 0;
   });
 
-  // أقل سعر
+
   lowestPrice = computed(() => {
     const items = this.productService.products();
     return items.length ? Math.min(...items.map(p => p.price)) : 0;
   });
 
-  // متوسط الأسعار
+ 
   avgPrice = computed(() => {
     const items = this.productService.products();
     return items.length
@@ -40,7 +40,7 @@ export class Dashboard implements OnInit {
   }
 
   ngOnInit(): void {
-    // لو مفيش بيانات — نجيبها مرة واحدة
+    
     if (this.productService.products().length === 0) {
       this.productService.fetchProducts();
     }
