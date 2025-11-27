@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Product Catalog Admin Panel
 
 This is a simple **Product Catalog Admin Panel** built with **Angular 20**, **TailwindCSS**, and **PrimeNG**. The project allows you to view, filter, search, paginate, and edit products.
@@ -32,3 +33,6 @@ This is a simple **Product Catalog Admin Panel** built with **Angular 20**, **Ta
 ```bash
 git clone <your-repo-url>
 cd product-catalog
+=======
+# Product-Catalog
+>>>>>>> 6f24c0b66ae92fca8c54acb2e317e21e1d0e2a25
