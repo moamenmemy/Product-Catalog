@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-products',
+    standalone: true,
   imports: [FormsModule,PaginatorModule,CommonModule],
   templateUrl: './products.html',
   styleUrl: './products.scss',

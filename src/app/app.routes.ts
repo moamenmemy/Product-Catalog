@@ -24,10 +24,9 @@ export const routes: Routes = [
 {
   path: 'products/:id',
   loadComponent: () =>
-    import('./pages/product-detail/product-detail')
-      .then(m => m.ProductDetail),
+    import('./pages/product-detail/product-detail').then(m => m.ProductDetail),
   title: 'Product Detail',
-  data: { prerender: false }
+  data: { prerender: false }  // 👈 يمنع Angular من محاولة prerender
 },
   {
     path: 'login',
