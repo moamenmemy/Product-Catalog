@@ -21,12 +21,14 @@ export const routes: Routes = [
     title: 'Products'
   },
 
-  {
-    path: 'products/:id', data: { renderMode: 'client' },
-    loadComponent: () =>
-      import('./pages/product-detail/product-detail').then(m => m.ProductDetail),
-    title: 'Product Detail'
-  },
+{
+  path: 'products/:id',
+  loadComponent: () =>
+    import('./pages/product-detail/product-detail')
+      .then(m => m.ProductDetail),
+  title: 'Product Detail',
+  data: { prerender: false }
+},
   {
     path: 'login',
     loadComponent: () =>
