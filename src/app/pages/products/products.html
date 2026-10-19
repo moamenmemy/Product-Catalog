@@ -1,38 +1,100 @@
-<section class="max-w-6xl mx-auto p-4">
+<section class="max-w-7xl mx-auto p-4 font-sans">
 
-  <!-- Search Input -->
-  <div class="mb-8 flex flex-col sm:flex-row gap-2 justify-center items-center">
-    <input 
-      type="text" 
-      placeholder="Search products..." 
-      [ngModel]="searchTerm()" 
-      (ngModelChange)="searchTerm.set($event)"
-      class="border rounded-2xl px-4 py-2 w-80 focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-
-    <!-- Filter by Category -->
-    <select 
-      [ngModel]="selectedCategory()" 
-      (ngModelChange)="selectedCategory.set($event)"
-      class="border rounded-2xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-    >
-      <option *ngFor="let cat of categories()" [value]="cat">{{ cat }}</option>
-    </select>
-  </div>
-
- 
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    @for (item of pagedProducts(); track $index) {
-    <div  (click)="goToDetail(item.id)"
-      class="p-4 bg-white shadow rounded cursor-pointer hover:shadow-lg flex flex-col items-center">
-      <img [src]="item?.image" alt="{{ item?.title }}" class="w-full h-48 object-contain mb-2" />
-      <h3 class="font-semibold text-center">{{ item?.title }}</h3>
-      <p class="text-green-600 font-bold">${{ item?.price }}</p>
-      <p class="text-gray-500 text-sm">{{ item?.category }}</p>
+  <!-- Top Bar: Search, Category Tabs, and Sort/View Options -->
+  <div class="mb-8 flex flex-col md:flex-row gap-4 justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+    
+    <!-- Search Input -->
+    <div class="relative w-full md:w-80">
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      </span>
+      <input 
+        type="text" 
+        placeholder="Filter by product name, SKU, or tags..." 
+        [ngModel]="searchTerm()" 
+        (ngModelChange)="searchTerm.set($event)"
+        class="border border-gray-200 rounded-lg pl-10 pr-4 py-2 w-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
     </div>
-}
+
+    <!-- Category Tabs -->
+    <div class="flex flex-wrap gap-2 items-center">
+     
+      @for (cat of categories(); track $index) {
+        <button 
+          (click)="selectedCategory.set(cat)"
+          [class]="selectedCategory() === cat ? 'bg-indigo-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+          class="px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize">
+          {{ cat }}
+        </button>
+      }
+    </div>
+
   </div>
 
+  <!-- Products Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for (item of pagedProducts(); track $index) {
+      <div class="bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col overflow-hidden">
+        
+        <!-- Card Header: Category Badge & Stock Status -->
+        <div class="p-4 pb-2 flex justify-between items-center">
+          <span class="text-xs font-semibold px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-md capitalize">
+            {{ item?.category }}
+          </span>
+          <span class="text-xs font-medium px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md">
+            In Stock: 34
+          </span>
+        </div>
+
+        <!-- Product Image -->
+        <div class="px-4 py-2 flex justify-center cursor-pointer" (click)="goToDetail(item.id)">
+        <img [src]="item?.thumbnail" alt="{{ item?.title }}" class="w-full h-52 object-contain" />
+        </div>
+
+        <!-- Product Details -->
+        <div class="p-4 flex flex-col flex-grow justify-between">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base line-clamp-1 cursor-pointer hover:text-indigo-600 mb-1" (click)="goToDetail(item.id)">
+              {{ item?.title }}
+            </h3>
+            <p class="text-gray-500 text-xs line-clamp-2 mb-4">
+              High-performance product designed to meet your daily needs with exceptional quality and durability...
+            </p>
+          </div>
+
+          <!-- Price and SKU Info -->
+          <div class="border-t border-gray-100 pt-3 flex justify-between items-center mb-4">
+            <div>
+              <span class="text-[10px] text-gray-400 block uppercase tracking-wider">Retail Price</span>
+              <span class="text-lg font-bold text-gray-900">${{ item?.price }}</span>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] text-gray-400 block uppercase tracking-wider">SKU</span>
+              <span class="text-xs font-mono text-gray-600">SKU-{{ item?.id }}</span>
+            </div>
+          </div>
+
+          <!-- Action Buttons (View, Edit, Delete) -->
+          <div class="grid grid-cols-3 gap-2 border-t border-gray-100 pt-3">
+            <button (click)="goToDetail(item.id)" class="flex items-center justify-center gap-1 py-1.5 px-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-50">
+              <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              View
+            </button>
+            <button (click)="goToEdit(item.id)" class="flex items-center justify-center gap-1 py-1.5 px-2 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-50">
+              <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              Edit
+            </button>
+            <button (click)="deleteItem(item.id)" class="flex items-center justify-center gap-1 py-1.5 px-2 border border-red-100 rounded-lg text-xs font-medium text-red-600 hover:bg-red-50">
+              <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1,1 0 00-1-1h-4a1,1 0 00-1 1v3M4 7h16"/></svg>
+              Delete
+            </button>
+          </div>
+
+        </div>
+      </div>
+    }
+  </div>
 
   <!-- Paginator -->
   <div class="mt-8 flex justify-center">

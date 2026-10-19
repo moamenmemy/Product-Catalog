@@ -8,5 +8,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './navbar.scss',
 })
 export class Navbar {
-
+isMobileMenuOpen = false;
 }

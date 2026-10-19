@@ -14,28 +14,42 @@ import { FormsModule } from '@angular/forms';
 export class ProductDetail implements OnInit {
   product = signal<Product | null>(null);
   editMode = signal(false); 
-
+isZoomed = signal(false);
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService,
+    public productService: ProductService,
     private router: Router
   ) {}
 
-  ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!isNaN(id)) {
-      const found = this.productService.products().find(p => p.id === id);
-      if (found) {
-        this.product.set({...found}); 
-      } else {
-        this.router.navigate(['/products']);
-      }
-    }
+
+toggleZoom() {
+    this.isZoomed.set(!this.isZoomed());
   }
 
-  toggleEdit() {
-    this.editMode.set(!this.editMode());
+  ngOnInit() {
+    // مراقبة تغيير الـ Route لكي يتم تحديث المنتج حتى لو تم الضغط على منتج مرتبط آخر
+    this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('id'));
+      if (!isNaN(id)) {
+        const found = this.productService.products().find(p => p.id === id);
+        if (found) {
+          this.product.set({...found}); 
+        } else {
+          this.router.navigate(['/products']);
+        }
+      }
+    });
   }
+
+  
+toggleEdit() {
+    const currentProduct = this.product();
+    if (currentProduct && currentProduct.id !== undefined) {
+      // توجيه المستخدم إلى مسار التعديل المعرّف لديك: /products/:id/edit
+      this.router.navigate(['/products', currentProduct.id, 'edit']);
+    }
+  }
+  
 
   saveChanges() {
     if (this.product()) {
@@ -44,9 +58,26 @@ export class ProductDetail implements OnInit {
     }
   }
 
-   updateImage(newUrl: string) {
+  goToDetail(id: number | undefined) {
+    if (id !== undefined) {
+      this.router.navigate(['/products', id]);
+    }
+  }
+
+  getRelatedProducts() {
+    const allProducts = this.productService.products();
+    const currentProduct = this.product();
+    
+    if (!currentProduct) return [];
+
+    return allProducts
+      .filter(p => p.category === currentProduct.category && p.id !== currentProduct.id)
+      .slice(0, 4);
+  }
+
+  updateImage(newUrl: string) {
     if (this.product()) {
-      this.product()!.image = newUrl;
+      this.product()!.thumbnail = newUrl;
     }
   }
 

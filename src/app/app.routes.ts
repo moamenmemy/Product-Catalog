@@ -1,8 +1,5 @@
 import { Routes } from '@angular/router';
-import { Dashboard } from './pages/dashboard/dashboard';
-import { Products } from './pages/products/products';
-import { ProductDetail } from './pages/product-detail/product-detail';
-import { NotFound } from './pages/not-found/not-found';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -21,24 +18,42 @@ export const routes: Routes = [
     title: 'Products'
   },
 
-{
-  path: 'products/:id',
-  loadComponent: () =>
-    import('./pages/product-detail/product-detail').then(m => m.ProductDetail),
-  title: 'Product Detail',
-  data: { prerender: false }  // 👈 يمنع Angular من محاولة prerender
-},
+  // ⚡ 1. ارفع مسار الإضافة هنا في الأعلى تماماً قبل الـ :id
+  {
+    path: 'products/add',
+    loadComponent: () =>
+      import('./add-product/add-product').then(m => m.AddProduct),
+    title: 'Add New Product',
+    data: { prerender: false }
+  },
+
+  // ⚡ 2. مسار التعديل
+  {
+    path: 'products/:id/edit',
+    loadComponent: () => import('./pages/edit-product/edit-product').then(m => m.EditProduct),
+    title: 'Edit Product',
+    data: { prerender: false } 
+  },
+
+  // ⚡ 3. مسار التفاصيل يأتي بعدهم لكي لا يختطف كلمة add
+  {
+    path: 'products/:id',
+    loadComponent: () =>
+      import('./pages/product-detail/product-detail').then(m => m.ProductDetail),
+    title: 'Product Detail',
+    data: { prerender: false }  
+  },
+
   {
     path: 'login',
     loadComponent: () =>
       import('./pages/login/login').then(m => m.Login),
-    title: 'Product Detail'
+    title: 'Login'
   },
 
-
-   {
-  path: '**',
-  loadComponent: () =>
-    import('./pages/not-found/not-found').then(m => m.NotFound)
-}
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./pages/not-found/not-found').then(m => m.NotFound)
+  }
 ];

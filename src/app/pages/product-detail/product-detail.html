@@ -1,50 +1,136 @@
-<section class="max-w-4xl mx-auto p-4">
-  <button 
-    class="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-    (click)="goBack()"
-  >
-    ← Back to Products
-  </button>
+<section class="max-w-7xl mx-auto p-4 md:p-6 font-sans">
 
-  <div  class="bg-white shadow rounded p-6 flex flex-col md:flex-row gap-6">
-    @if(product()){
-    <img 
-      [src]="product()?.image" 
-      [alt]="product()?.title" 
-      class="w-full md:w-1/3 object-contain rounded"
-    />
-
-    <div class="flex-1 flex flex-col gap-2">
-      
-      <div >
-        @if(!editMode()){
-        <h1 class="text-2xl font-bold">{{ product()?.title }}</h1>
-        <p class="text-green-600 font-bold text-xl">${{ product()?.price }}</p>
-        <p class="text-gray-500">{{ product()?.category }}</p>
-        <p class="mt-4">{{ product()?.description }}</p>
-        <button class="mt-4 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600" (click)="toggleEdit()">
-          Edit Product
-        </button>
-    }
-      </div>
-
-      <div  class="flex flex-col gap-3">
-    @if(editMode() && product()) {
-  <input [(ngModel)]="product()!.title" class="border px-3 py-2 rounded" placeholder="Product Title" />
-  <input [(ngModel)]="product()!.price" type="number" class="border px-3 py-2 rounded" placeholder="Price" />
-  <input [(ngModel)]="product()!.category" class="border px-3 py-2 rounded" placeholder="Category" />
-  <textarea [(ngModel)]="product()!.description" class="border px-3 py-2 rounded" placeholder="Description"></textarea>
-   <input [(ngModel)]="product()!.image" placeholder="Image URL" />
-
-  <button class="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700" (click)="saveChanges()">
-    Save
-  </button>
-  <button class="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" (click)="toggleEdit()">
-    Cancel
-  </button>
-}
-      </div>
-    </div>
-}
+  <!-- Back Button & Header Actions -->
+  <div class="mb-6 flex justify-between items-center">
+    <button 
+      (click)="goBack()" 
+      class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl shadow-sm hover:bg-gray-50 transition-all">
+      <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      Back to Products
+    </button>
   </div>
+
+  <!-- Main Product Details Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
+    
+    <!-- Left Column: Image & Media Gallery (5 Columns) -->
+ <!-- Left Column: Image Preview (5 Columns) -->
+    <div class="lg:col-span-5 space-y-4">
+      
+      <!-- Main Large Image Box -->
+      <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center relative min-h-[400px]">
+        <div class="absolute top-4 left-4 flex items-center gap-2">
+          <span class="text-[10px] font-bold px-2.5 py-1 bg-gray-900 text-white rounded uppercase tracking-wider">Primary View</span>
+          <span class="text-xs text-gray-400">CatalogHub</span>
+        </div>
+        
+        <img 
+          [src]="product()?.thumbnail" 
+          [alt]="product()?.title" 
+          class="w-full h-80 object-contain drop-shadow-md my-4 transition-transform duration-300"
+         [style.transform]="isZoomed() ? 'scale(1.5)' : 'scale(1)'"
+        />
+
+        <!-- Zoom Button Trigger -->
+        <button 
+          (click)="toggleZoom()"
+          class="absolute bottom-4 right-4 bg-white/90 backdrop-blur border border-gray-200 p-2.5 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition-all text-gray-700"
+          title="Toggle Zoom">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Pricing, Analytics & Inventory (7 Columns) -->
+  <div class="lg:col-span-7 space-y-6">
+      
+      <!-- Header Meta & Title Box -->
+      <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm relative">
+        <div class="absolute top-6 right-6">
+          <span class="px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-full border border-emerald-100">Active Catalog</span>
+        </div>
+        <div class="flex items-center gap-2 text-xs font-medium text-indigo-600 mb-2 uppercase tracking-wide">
+          <span>{{ product()?.category }}</span>
+          <span>/</span>
+          <span class="text-gray-500">High-End Audio</span>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">
+          {{ product()?.title }}
+        </h1>
+        <p class="text-gray-500 text-xs mb-4">
+          Studio-grade over-ear active noise cancelling headset with spatial audio tracking.
+        </p>
+        <div class="flex flex-wrap items-center gap-4 pt-3 border-t border-gray-100 text-xs text-gray-600">
+          <div><span class="text-gray-400 font-medium">SKU:</span> <span class="bg-gray-100 px-2 py-0.5 rounded font-mono font-semibold text-gray-800">AUD-{{ product()?.id }}</span></div>
+        </div>
+      </div>
+
+      <!-- Description Box -->
+      <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+        <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider mb-2">Product Description</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          {{ product()?.description }}
+        </p>
+      </div>
+
+      <!-- Pricing & Edit Action Side-by-Side Box -->
+      <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
+        <!-- Retail Price -->
+        <div class="w-full sm:w-auto">
+          <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">Retail Price</div>
+          <div class="text-2xl font-black text-gray-900 mb-1">${{ product()?.price }}</div>
+          <div class="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
+            <span>📈</span> MAP Compliant
+          </div>
+        </div>
+
+        <!-- Edit Product Button -->
+        <div class="w-full sm:w-auto flex justify-end">
+          <button 
+            (click)="toggleEdit()" 
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-xl shadow transition-all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            </svg>
+            Edit Product Details
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+ 
+
+  <!-- Related Products Section (Same Category) -->
+  <div class="mt-12">
+    <h2 class="text-xl font-bold text-gray-900 mb-6">Related Products in "{{ product()?.category }}"</h2>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      @for (item of getRelatedProducts(); track $index) {
+        <div 
+          (click)="goToDetail(item.id)"
+          class="p-4 bg-white border border-gray-100 shadow-sm rounded-2xl cursor-pointer hover:shadow-md transition-all flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] font-semibold px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded uppercase">
+              {{ item?.category }}
+            </span>
+            <div class="flex justify-center my-3">
+              <img [src]="item?.thumbnail" alt="{{ item?.title }}" class="w-full h-40 object-contain" />
+            </div>
+            <h3 class="font-semibold text-gray-800 text-sm line-clamp-1 mb-1">{{ item?.title }}</h3>
+          </div>
+          <div class="pt-2 border-t border-gray-50 flex justify-between items-center mt-2">
+            <span class="text-emerald-600 font-bold text-sm">${{ item?.price }}</span>
+            <span class="text-xs text-indigo-600 font-medium hover:underline">View Details</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
 </section>

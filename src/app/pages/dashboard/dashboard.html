@@ -1,53 +1,84 @@
-<!-- Header Grid -->
-<div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4 my-6">
+<div class="space-y-6 w-full">
   
-
-
-
-
-
-</div>
-
-
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-  <!-- Total Products -->
-  <div class="p-6 bg-white rounded-xl shadow ">
-    <h2 class="text-lg font-semibold">Total Products</h2>
-    <p class="text-3xl font-bold text-blue-600 mt-2">
-      {{ totalProducts() }}
-    </p>
-  </div>
-
-  <!-- Highest Price -->
-  <div class="p-6 bg-white rounded-xl shadow">
-    <h2 class="text-lg font-semibold">Highest Price</h2>
-    <p class="text-3xl font-bold text-green-600 mt-2">
-      ${{ highestPrice() }}
-    </p>
-  </div>
-
-  <!-- Lowest Price -->
-  <div class="p-6 bg-white rounded-xl shadow">
-    <h2 class="text-lg font-semibold">Lowest Price</h2>
-    <p class="text-3xl font-bold text-red-600 mt-2">
-      ${{ lowestPrice() }}
-    </p>
-  </div>
-
-
-  <div class="md:col-span-3 grid grid-cols-3 gap-4 p-6 bg-white rounded-xl shadow">
-    <div class="col-span-2">
-      <h2 class="text-lg font-semibold">Average Price</h2>
-      <p class="text-3xl font-bold text-purple-600 mt-2">
-        ${{ avgPrice() }}
-      </p>
+  <!-- Stats Cards Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-8xl mx-auto px-4">
+    
+    <!-- 1. Total Products Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between h-64 relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:border-indigo-500 hover:shadow-lg">
+      <div class="flex items-start justify-between">
+        <div>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Products</p>
+          <h3 class="text-3xl font-black text-slate-900 mt-2"> {{ totalProducts() }} <span class="text-sm font-medium text-slate-500">items</span></h3>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg">
+          <i class="fa-solid fa-box-open"></i>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-md flex items-center gap-1">
+          <i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +12%
+        </span>
+        <span class="text-xs text-slate-400 font-medium">vs. last month</span>
+      </div>
     </div>
 
-    <div class="col-span-1 flex justify-end items-center">
-   
+    <!-- 2. Highest Price Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between h-64 relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:border-indigo-500 hover:shadow-lg">
+      <div class="flex items-start justify-between">
+        <div>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Highest Price</p>
+          <h3 class="text-3xl font-black text-slate-900 mt-2">${{ highestPrice() }}</h3>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg">
+          <i class="fa-solid fa-arrow-up"></i>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-md">
+          SKU: JWL-0912
+        </span>
+        <span class="text-xs text-slate-400 truncate">Minimalist Titanium</span>
+      </div>
     </div>
+
+    <!-- 3. Lowest Price Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between h-64 relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:border-indigo-500 hover:shadow-lg">
+      <div class="flex items-start justify-between">
+        <div>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Lowest Price</p>
+          <h3 class="text-3xl font-black text-slate-900 mt-2"> ${{ lowestPrice() }}</h3>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg">
+          <i class="fa-solid fa-arrow-down"></i>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-md">
+          Stock: 48 units
+        </span>
+        <span class="text-xs text-slate-400 truncate">Accessory Cord</span>
+      </div>
+    </div>
+
+    <!-- 4. Average Price Card -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between h-64 relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:border-indigo-500 hover:shadow-lg">
+      <div class="flex items-start justify-between">
+        <div>
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Average Price</p>
+          <h3 class="text-3xl font-black text-slate-900 mt-2">${{ avgPrice() }}</h3>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-md flex items-center gap-1">
+          <i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +4.8%
+        </span>
+        <span class="text-xs text-slate-400 font-medium">across 5 categories</span>
+      </div>
+    </div>
+
   </div>
+
 </div>
-
-
-

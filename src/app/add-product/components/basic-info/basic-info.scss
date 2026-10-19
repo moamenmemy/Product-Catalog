@@ -1,0 +1,17 @@
+/* لون الإطار عند التركيز أو التحديد */
+::ng-deep .p-select:not(.p-disabled).p-focus {
+  border-color: #4f46e5 !important; /* Indigo-600 */
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2) !important;
+}
+
+/* لون العنصر المحدد بالفعل (Selected) */
+::ng-deep .p-select-option.p-select-option-selected {
+  background-color: #e0e7ff !important; /* Indigo-100 */
+  color: #4338ca !important;            /* Indigo-700 */
+}
+
+/* لون العنصر عند مرور الماوس عليه (Hover) */
+::ng-deep .p-select-option:not(.p-select-option-selected):hover {
+  background-color: #e0e7ff !important; /* Indigo-100 */
+  color: #4338ca !important;            /* Indigo-700 */
+}

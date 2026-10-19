@@ -1,0 +1,221 @@
+<div class="p-6 max-w-7xl mx-auto bg-gray-50/50 min-h-screen">
+  
+<!-- Top Header Bar -->
+  <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+    <div>
+   <a routerLink="/products" class="text-xs font-medium text-indigo-600 hover:underline flex items-center gap-1 mb-1 cursor-pointer">
+  <i class="fa-solid fa-arrow-left"></i> Back to Products
+</a>
+     <h1 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+  Edit Product 
+  @if (editForm.get('title')?.value) {
+    <span class="text-sm font-normal text-gray-500">: {{ editForm.get('title')?.value }}</span>
+  }
+</h1>
+      <p class="text-xs text-gray-400">Manage catalog attributes, multichannel inventory, pricing matrices, and photography.</p>
+    </div>
+    
+    <!-- Top Action Buttons (Connected) -->
+    <div class="flex items-center gap-2">
+      <button 
+        type="button" 
+        (click)="onDelete()"
+        class="px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 text-xs font-semibold transition border border-red-200 flex items-center gap-1.5 cursor-pointer">
+        <i class="fa-solid fa-trash-can"></i> Delete Product
+      </button>
+      
+      <button 
+        type="button" 
+        (click)="onCancel()"
+        class="px-3 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer">
+        <i class="fa-solid fa-xmark"></i> Cancel
+      </button>
+      
+      <button 
+        type="button" 
+        (click)="onSubmit()"
+        [disabled]="editForm.invalid"
+        class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-xs font-semibold transition disabled:opacity-50 flex items-center gap-1.5 shadow-sm cursor-pointer">
+        <i class="fa-solid fa-check"></i> Save Changes
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Form Container (Two Columns Layout) -->
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <!-- Left Column (General Details & Pricing - Takes 2 columns) -->
+    <div class="lg:col-span-2 space-y-6">
+      
+      <!-- General Details Card -->
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
+        <div class="flex justify-between items-center border-b pb-3">
+          <h2 class="text-sm font-bold text-gray-800 flex items-center gap-2">
+            <span class="text-indigo-600"><i class="fa-solid fa-circle-info"></i></span> General Details
+          </h2>
+          <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-500 font-mono">Section 01</span>
+        </div>
+
+        <!-- Product Title -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Product Title</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid fa-tag"></i></span>
+            <input 
+              type="text" 
+              formControlName="title"
+              class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+          </div>
+        </div>
+
+        <!-- Grid for SKU & Category -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">SKU (Stock Keeping Unit)</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid fa-barcode"></i></span>
+              <input type="text" value="AUD-8821" disabled class="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 text-sm">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Taxonomy Category</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid fa-layer-group"></i></span>
+              <input 
+                type="text" 
+                formControlName="category"
+                class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Description & Specifications</label>
+          <textarea 
+            formControlName="description" 
+            rows="5"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm"
+            placeholder="Write product details..."></textarea>
+        </div>
+      </div>
+
+      <!-- Pricing & Inventory Logistics Card -->
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
+        <div class="flex justify-between items-center border-b pb-3">
+          <h2 class="text-sm font-bold text-gray-800 flex items-center gap-2">
+            <span class="text-indigo-600"><i class="fa-solid fa-wallet"></i></span> Pricing & Inventory Logistics
+          </h2>
+          <span class="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-500 font-mono">Section 02</span>
+        </div>
+
+        <!-- Pricing Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Retail Price (USD)</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid fa-dollar-sign"></i></span>
+              <input 
+                type="number" 
+                formControlName="price"
+                class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">MSRP Reference</label>
+            <input type="text" value="$ 279.00" disabled class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Cost of Goods (COGS)</label>
+            <input type="text" value="$ 145.00" disabled class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 text-sm">
+          </div>
+        </div>
+
+        <!-- Stock Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Available Stock</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fa-solid fa-cubes"></i></span>
+              <input 
+                type="number" 
+                formControlName="stock"
+                class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Low Stock Threshold</label>
+            <input type="number" value="5" disabled class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 text-sm">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column (Product Imagery & Publishing - Takes 1 column) -->
+    <div class="space-y-6">
+      
+      <!-- Product Imagery Card -->
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
+        <h2 class="text-sm font-bold text-gray-800 flex items-center gap-2 border-b pb-3">
+          <span class="text-indigo-600"><i class="fa-solid fa-image"></i></span> Product Imagery
+        </h2>
+        
+        <!-- Main Image Preview Box (Displays Old or Newly Uploaded Image) -->
+        <div class="border rounded-lg p-2 bg-gray-50 text-center">
+          <div class="bg-indigo-50 text-indigo-700 text-[10px] font-semibold py-1 px-2 rounded mb-2 inline-flex items-center gap-1">
+            <i class="fa-solid fa-star text-[10px]"></i> Primary Product Image
+          </div>
+          <div class="h-48 flex items-center justify-center overflow-hidden rounded bg-white border">
+            <img [src]="productImage" alt="Product Image" class="h-full object-cover">
+          </div>
+        </div>
+
+        <!-- Upload New Image Input Section -->
+        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-50 transition cursor-pointer relative">
+          <input 
+            type="file" 
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+          <div class="space-y-1">
+            <i class="fa-solid fa-cloud-arrow-up text-indigo-600 text-xl mb-1"></i>
+            <p class="text-xs text-gray-600 font-medium">Drag & drop new product imagery, or <span class="text-indigo-600 underline">browse files</span></p>
+            <p class="text-[10px] text-gray-400">PNG, JPG, WebP formats up to 10MB each</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Publishing & Channels Card -->
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
+        <h2 class="text-sm font-bold text-gray-800 flex items-center gap-2 border-b pb-3">
+          <span class="text-indigo-600"><i class="fa-solid fa-globe"></i></span> Publishing & Channels
+        </h2>
+        
+       <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Catalog Lifecycle State</label>
+          <!-- استخدام مكون الاختيار الخاص بـ PrimeNG -->
+          <p-select 
+            formControlName="status" 
+            [options]="lifecycleOptions" 
+            optionLabel="label" 
+            optionValue="value"
+            placeholder="Select a state"
+            styleClass="w-full border border-gray-300 rounded-lg text-sm bg-white">
+          </p-select>
+        </div>
+
+        <div class="space-y-2.5 pt-2">
+          <label class="flex items-center gap-2 text-xs font-medium text-gray-700 cursor-pointer">
+            <input type="checkbox" checked class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4"> Online Storefront
+          </label>
+          <label class="flex items-center gap-2 text-xs font-medium text-gray-700 cursor-pointer">
+            <input type="checkbox" checked class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4"> Amazon Sync
+          </label>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+</div>

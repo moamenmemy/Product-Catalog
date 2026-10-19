@@ -25,7 +25,7 @@ export class Products {
   first = signal(0);
   rows = signal(10);
 
-  constructor(private productService: ProductService, private router: Router) {
+  constructor(public productService: ProductService, private router: Router) {
    
     this.productService.fetchProducts();
 
@@ -36,7 +36,7 @@ export class Products {
       this.categories.set(['All', ...cats]);
     });
 
-    // تحديث filteredProducts حسب البحث والكاتيجوري
+   
     effect(() => {
       const term = this.searchTerm().toLowerCase();
       const category = this.selectedCategory();
@@ -75,6 +75,18 @@ export class Products {
   goToDetail(id: number | undefined) {
     if (id !== undefined) {
       this.router.navigate(['/products', id]);
+    }
+  }
+
+  goToEdit(id: number | undefined) {
+    if (id !== undefined) {
+     this.router.navigate(['/products', id, 'edit']);
+    }
+  }
+
+  deleteItem(id: number | undefined) {
+    if (id !== undefined) {
+      this.productService.deleteProduct(id);
     }
   }
 }

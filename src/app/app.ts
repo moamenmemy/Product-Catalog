@@ -21,16 +21,24 @@ export class App {
 
          if (url.startsWith('/products/') && url !== '/products') {
       this.currentRoute.set('Product Detail');
-    } else if (url === '/products') {
-      this.currentRoute.set('Products List');
-    } else if (url === '/dashboard') {
-      this.currentRoute.set('Dashboard');
-    } else if (url === '/login') {
-      this.currentRoute.set('Login');
-    } else {
-      this.currentRoute.set('');
-    }
-  }
+if (url.startsWith('/products/add')) {
+  this.currentRoute.set('Add New Product');
+} else if (url.includes('/edit')) {
+  this.currentRoute.set('Edit Product');
+} else if (url.startsWith('/products/') && url !== '/products') {
+  this.currentRoute.set('Product Detail');
+} else if (url === '/products') {
+  this.currentRoute.set('Products List');
+} else if (url === '/dashboard') {
+  this.currentRoute.set('Dashboard');
+} else if (url === '/login') {
+  this.currentRoute.set('Login');
+} else {
+  this.currentRoute.set('');
+}
+}
+      }
+             
     });
   }
 }
